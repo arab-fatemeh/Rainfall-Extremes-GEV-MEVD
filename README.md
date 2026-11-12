@@ -14,7 +14,9 @@ This repository estimates the **200-year daily rainfall** in moving 30-year wind
 1. **Valid years**: a year is used if it has at least 360 days of data. For each year we keep the annual maximum, the number of wet days *N* (rain > 1 mm) and a Weibull fit (scale *C*, shape *w*) of the wet-day excesses, using probability weighted moments.
 2. **Windows**: 30-year windows moved by one year. A window is kept if it has at least 20 valid years.
 3. **GEV**: L-moment fit to the annual maxima of the window (Hosking, 1990), then the quantile with non-exceedance probability 1 − 1/200.
-4. **MEVD**: the distribution of the annual maximum is the average over the years of the window of [1 − exp(−(x/*C*ⱼ)^*w*ⱼ)]^*N*ⱼ (Marani & Ignaccolo, 2015; Zorzetto et al., 2016). The 200-year value is found with a root solver, and the 1 mm threshold is added back.
+4. **MEVD**: the distribution of the annual maximum is the average over the *n* years of the window
+   $$F(x) = \frac{1}{n}\sum_{j=1}^{n}\left[1 - e^{-(x/C_j)^{w_j}}\right]^{N_j}$$
+   (Marani & Ignaccolo, 2015; Zorzetto et al., 2016). The 200-year value is found with a root solver, and the 1 mm threshold is added back.
 5. **Uncertainty**: 500 bootstrap samples of the years in each window. The same resampled years are used for both methods, so their intervals are directly comparable. The 5th and 95th percentiles give a 90% interval.
 
 The MEVD uses every wet day, not only one value per year, so its estimates are usually much more stable than the GEV's: in the synthetic example the median 90% interval is about 75 mm wide for the GEV and 20–30 mm for the MEVD.
